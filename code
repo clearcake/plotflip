@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Generator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #ff0000, #ffffff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 500;
+            font-size: 2rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background-color: #ff0000;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+        }
+
+        button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.25s ease-out;
+        }
+
+        button:active:before {
+            transform: scaleX(1);
+            transform-origin: right;
+        }
+
+        button:hover {
+            background-color: #cc0000;
+        }
+
+        h2 {
+            margin-top: 30px;
+            font-weight: 500;
+        }
+
+        pre {
+            background-color: #f7f7f7;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-weight: 300;
+        }
+    </style>
+    <script>
+        async function generate() {
+            const movie = document.getElementById("movie").value;
+            const response = await fetch("https://your-flask-app.herokuapp.com/generate", {
+                method: "POST",
+                body: new FormData(new URLSearchParams({ movie })),
+            });
+            const data = await response.json();
+            document.getElementById("output").innerText = data.output;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>PlotFlip</h1>
+        <input type="text"
+        id="movie" placeholder="Enter a movie title or choose from examples" />
+        <div class="button-container">
+            <button onclick="generate()">Generate</button>
+        </div>
+        <h2>Generated Summary:</h2>
+        <pre id="output"></pre>
+    </div>
+</body>
+</html>
